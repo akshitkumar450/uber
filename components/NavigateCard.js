@@ -6,6 +6,7 @@ import { setDestination } from "../Redux/slices/navSlice";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import Favourites from "./Favourites";
+import { Icon } from "react-native-elements";
 
 const NavigateCard = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const NavigateCard = () => {
   return (
     <View style={tw`bg-white flex-1`}>
       {/**for testing only,,by default when we select the options from search field ,,after selecting it should navigate  */}
-      <TouchableOpacity onPress={() => navigation.navigate("RideOptions")}>
+      <TouchableOpacity>
         <Text style={tw`text-center text-xl py-2`}>Good Morning</Text>
       </TouchableOpacity>
       <View style={tw`border-t border-gray-200`}>
@@ -58,6 +59,14 @@ const NavigateCard = () => {
         </View>
       </View>
       <Favourites />
+      <View style={tw`items-center py-1`}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("RideOptions")}
+          style={tw`flex-row w-24 items-center px-4 py-3 bg-black rounded-full `}>
+          <Icon name="car" type="font-awesome" color="white" size={16} />
+          <Text style={tw`text-white ml-2`}>Rides</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
