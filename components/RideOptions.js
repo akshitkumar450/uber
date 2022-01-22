@@ -11,6 +11,8 @@ import tw from "tailwind-react-native-classnames";
 import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectTimeTravel } from "../Redux/slices/navSlice";
 
 const data = [
   {
@@ -22,13 +24,13 @@ const data = [
   {
     id: "uber-x-124",
     title: "Uber XL",
-    multiplier: 1,
+    multiplier: 1.2,
     image: "https://links.papareact.com/5w8",
   },
   {
     id: "uber-x-125",
     title: "Uber LUX",
-    multiplier: 1,
+    multiplier: 1.75,
     image: "https://links.papareact.com/7pf",
   },
 ];
@@ -36,7 +38,7 @@ const data = [
 const RideOptions = () => {
   const navigation = useNavigation();
   const [select, setSelect] = useState("");
-  console.log(select);
+  const travelTimeInfo = useSelector(selectTimeTravel);
   return (
     <View style={tw`bg-white flex-1`}>
       <View style={tw`relative`}>
@@ -45,7 +47,9 @@ const RideOptions = () => {
           style={tw`absolute top-3 left-5`}>
           <Icon name="chevron-left" type="fontawesome" size={28} />
         </TouchableOpacity>
-        <Text style={tw`text-center text-xl py-2`}>Select a Ride</Text>
+        <Text style={tw`text-center text-xl py-2`}>
+          Select a Ride {travelTimeInfo?.distance?.text}
+        </Text>
       </View>
       <FlatList
         data={data}
@@ -55,11 +59,12 @@ const RideOptions = () => {
             <TouchableOpacity
               onPress={() => setSelect(item.title)}
               style={tw`flex-row items-center justify-around   mx-2 rounded-lg 
-                ${item?.title === select ? "bg-gray-200" : ""}`}>
+               `}>
               <View>
                 <Text style={tw`font-bold`}>{item.title}</Text>
-                <Text style={tw`font-bold`}>{item.multiplier}</Text>
-                <Text style={tw`font-bold`}>travel time..</Text>
+                <Text style={tw`font-bold`}>
+                  {travelTimeInfo?.duration.text} travel time
+                </Text>
               </View>
               <View>
                 <Image
@@ -74,7 +79,15 @@ const RideOptions = () => {
                 />
               </View>
               <View>
-                <Text style={tw`font-bold text-lg`}>$99</Text>
+                {/**fot price */}
+                <Text style={tw`font-bold text-lg`}>
+                  {new Intl.NumberFormat("en-gb", {
+                    style: "currency",
+                    currency: "GBP",
+                  }).format(
+                    (travelTimeInfo?.duration.value * item.multiplier) / 100
+                  )}
+                </Text>
               </View>
             </TouchableOpacity>
           );

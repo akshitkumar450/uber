@@ -3,13 +3,19 @@ import React, { useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
 import { useSelector } from "react-redux";
-import { selectDestination, selectOrigin } from "../Redux/slices/navSlice";
+import {
+  selectDestination,
+  selectOrigin,
+  setTravelTime,
+} from "../Redux/slices/navSlice";
 import MapViewDirections from "react-native-maps-directions";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 const MapComp = () => {
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
   const mapRef = useRef(null);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!origin || !destination) return;
     // zoom and fit to markers
@@ -22,6 +28,23 @@ const MapComp = () => {
       },
     }); //identifier origin in Marker
   }, [origin, destination]);
+
+  // using google distance matrix api
+  useEffect(() => {
+    if (!origin || !destination) return;
+    const fetchTime = async () => {
+      const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${
+        origin.description
+      }$destination=${destination.description}&key=${"your api key"}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      // data has all the info like time,distance duration
+      dispatch(setTravelTime(data.rows[0].elements[0]));
+    };
+    fetchTime();
+  }, [origin, destination]);
+
   return (
     <View>
       <MapView
