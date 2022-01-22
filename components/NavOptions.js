@@ -2,12 +2,14 @@ import { FlatList, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import tw from "tailwind-react-native-classnames";
 import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+
 const data = [
   {
     id: "123",
     title: "get a ride",
     image: "https://links.papareact.com/3pn",
-    screen: "MapScreen",
+    screen: "Map",
   },
   {
     id: "456",
@@ -17,6 +19,8 @@ const data = [
   },
 ];
 const NavOptions = () => {
+  // instead of destructuring as props use hook
+  const navigation = useNavigation();
   return (
     <FlatList
       data={data}
@@ -24,7 +28,7 @@ const NavOptions = () => {
       horizontal
       renderItem={({ item }) => {
         return (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
             <View style={tw`bg-gray-200 mr-5 p-2 rounded-lg`}>
               <Image
                 style={{
