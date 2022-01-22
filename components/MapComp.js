@@ -3,9 +3,11 @@ import React from "react";
 import MapView, { Marker } from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
 import { useSelector } from "react-redux";
-import { selectOrigin } from "../Redux/slices/navSlice";
+import { selectDestination, selectOrigin } from "../Redux/slices/navSlice";
+import MapViewDirections from "react-native-maps-directions";
 const MapComp = () => {
   const origin = useSelector(selectOrigin);
+  const destination = useSelector(selectDestination);
   return (
     <View>
       <MapView
@@ -24,6 +26,16 @@ const MapComp = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
+        {/**original view */}
+        {origin && destination && (
+          <MapViewDirections
+            origin={origin.description}
+            destination={destination.description}
+            apikey={"GOOGLE_MAPS_APIKEY"}
+            strokeWidth={3}
+            strokeColor="black"
+          />
+        )}
         {origin?.location && (
           <Marker
             coordinate={{
@@ -35,7 +47,22 @@ const MapComp = () => {
             identifier="origin"
           />
         )}
-        {/**for showing the marker */}
+        {/**testing */}
+        <MapViewDirections
+          origin={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+          }}
+          destination={{
+            latitude: 37.771707,
+            longitude: -122.4053769,
+          }}
+          // apikey={"GOOGLE_MAPS_APIKEY"}
+          strokeWidth={3}
+          strokeColor="black"
+        />
+
+        {/**for showing the marker for testing */}
         <Marker
           coordinate={{
             latitude: 37.78825,
