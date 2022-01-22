@@ -3,6 +3,8 @@ import React from "react";
 import tw from "tailwind-react-native-classnames";
 import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { selectOrigin } from "../Redux/slices/navSlice";
 
 const data = [
   {
@@ -21,6 +23,8 @@ const data = [
 const NavOptions = () => {
   // instead of destructuring as props use hook
   const navigation = useNavigation();
+  const origin = useSelector(selectOrigin);
+
   return (
     <FlatList
       data={data}
@@ -28,8 +32,13 @@ const NavOptions = () => {
       horizontal
       renderItem={({ item }) => {
         return (
-          <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
-            <View style={tw`bg-gray-200 mr-5 p-2 rounded-lg`}>
+          <TouchableOpacity
+            disabled={!origin}
+            onPress={() => navigation.navigate(item.screen)}>
+            <View
+              style={tw`bg-gray-200 mr-5 p-2 rounded-lg ${
+                !origin ? "bg-red-400" : "bg-green-500"
+              }`}>
               <Image
                 style={{
                   width: 120,
