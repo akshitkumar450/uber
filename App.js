@@ -1,8 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
 import { Provider } from "react-redux";
-import { selectOrigin } from "./Redux/slices/navSlice";
+
 import { store } from "./Redux/store";
 import Home from "./screens/Home";
 
