@@ -1,16 +1,31 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
 import { useSelector } from "react-redux";
 import { selectDestination, selectOrigin } from "../Redux/slices/navSlice";
 import MapViewDirections from "react-native-maps-directions";
+import { useEffect } from "react";
 const MapComp = () => {
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (!origin || !destination) return;
+    // zoom and fit to markers
+    mapRef.current.fitToSuppliedMarkers(["origin,destination"], {
+      edgePadding: {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50,
+      },
+    }); //identifier origin in Marker
+  }, [origin, destination]);
   return (
     <View>
       <MapView
+        ref={mapRef}
         mapType="mutedStandard"
         style={tw`h-full w-full`}
         // is we are getting from redux store
@@ -36,6 +51,16 @@ const MapComp = () => {
             strokeColor="black"
           />
         )}
+        {/*for destination */}
+        {destination?.location && (
+          <Marker
+            coordinate={{ latitude: 37.771707, longitude: -122.4053769 }}
+            title="origin"
+            description="starting point"
+            identifier="destination"
+          />
+        )}
+        {/**for origin */}
         {origin?.location && (
           <Marker
             coordinate={{
@@ -63,6 +88,7 @@ const MapComp = () => {
         />
 
         {/**for showing the marker for testing */}
+        {/**for origin */}
         <Marker
           coordinate={{
             latitude: 37.78825,
@@ -71,6 +97,13 @@ const MapComp = () => {
           title="origin"
           description="starting point"
           identifier="origin"
+        />
+        {/**for destination */}
+        <Marker
+          coordinate={{ latitude: 37.771707, longitude: -122.4053769 }}
+          title="origin"
+          description="starting point"
+          identifier="destination"
         />
       </MapView>
     </View>
