@@ -13,7 +13,7 @@ const Map = () => {
       <View style={tw`h-1/2 `}>
         <MapComp />
       </View>
-      <View style={tw`h-1/2 bg-blue-400`}>
+      <View style={tw`h-1/2 `}>
         {/**nested navigation by this we can naigate to new  page within this parent component */}
         <Stack.Navigator>
           <Stack.Screen
