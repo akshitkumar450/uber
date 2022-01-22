@@ -2,6 +2,7 @@ import { Image, View } from "react-native";
 import React from "react";
 import tw from "tailwind-react-native-classnames";
 import NavOptions from "../components/NavOptions";
+import SearchBar from "../components/SearchBar";
 const Home = () => {
   return (
     <View style={tw`bg-gray-100 h-full`}>
@@ -16,6 +17,7 @@ const Home = () => {
             uri: "https://links.papareact.com/gzs",
           }}
         />
+        <SearchBar />
         <NavOptions />
       </View>
     </View>
