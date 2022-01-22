@@ -65,6 +65,8 @@ const MapComp = () => {
           longitudeDelta: 0.0421,
         }}>
         {/**original view */}
+        {/**this is for directions from origin to desti */}
+
         {origin && destination && (
           <MapViewDirections
             origin={origin.description}
@@ -96,6 +98,7 @@ const MapComp = () => {
           />
         )}
         {/**testing */}
+        {/**this is for directions from origin to desti */}
         <MapViewDirections
           origin={{
             latitude: 37.78825,
